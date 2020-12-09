@@ -12,3 +12,7 @@ export const getCriminals = () => {
       }
     )
 }
+
+export const getCriminal = (criminalId) => {
+  return criminals.find(criminal => criminal.id === criminalId)
+}
