@@ -29,7 +29,7 @@ eventHub.addEventListener('crimeChosen', event => {
 export const CriminalList = () => {
   getCriminals().then( () => {
     let perps = useCriminals()
-    render(perps)
+    render(perps)                 
   })
 }
 
