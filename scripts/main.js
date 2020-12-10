@@ -12,6 +12,8 @@ import "./notes/NoteList.js"
 
 import "./alibis/Associates.js"
 
+import "./alibis/AssociatesList.js"
+
 CriminalList()
 
 ConvictionSelect()

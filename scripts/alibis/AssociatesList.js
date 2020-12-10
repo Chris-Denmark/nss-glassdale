@@ -1,4 +1,4 @@
-import { getCriminals, useCriminals } from "../criminals/CriminalDataProvider.js"
+import { useCriminals } from "../criminals/CriminalDataProvider.js"
 
 import { CriminalList } from "../criminals/CriminalList.js"
 
@@ -9,8 +9,13 @@ CriminalList()
 const eventHub = document.querySelector(".container")
 const contentTarget = document.querySelector(".alibiList")
 
-const render = () => {
-
+const render = (criminalObj) => {
+  let knownAssociates = []
+  let associates = criminalObj.known_associates
+  for (const associate of associates) {
+    knownAssociates.push(alibiHTML(associate))
+  }
+  contentTarget.innerHTML = knownAssociates.join("")
 }
 
 eventHub.addEventListener("associateButtonClicked", event => {
