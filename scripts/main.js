@@ -10,7 +10,7 @@ import { ShowNoteButton } from "./notes/ShowNotesButton.js"
 
 import "./notes/NoteList.js"
 
-import "./alibis/AssociatesList.js"
+import "./alibis/Associates.js"
 
 CriminalList()
 

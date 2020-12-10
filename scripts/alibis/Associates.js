@@ -1,15 +1,14 @@
-import { getCriminals, useCriminals } from "../criminals/CriminalDataProvider.js"
-
 let knownAssociates = []
 
 const contentTarget = document.querySelector(".associateButton")
 const eventHub = document.querySelector(".container")
 
 eventHub.addEventListener("click", clickEvent => {
-  if (clickEvent.target.class === "associateButton") {
+  if (clickEvent.target.id.startsWith === "associates--") {
+    const [prefix, chosenCriminal] = clickEvent.target.id.split("--")
     const customEvent = new CustomEvent("associateButtonClicked", {
       detail: {
-        criminalAssociates: clickEvent.target.id
+        criminalId: chosenCriminal
       }
     })
     eventHub.dispatchEvent(customEvent)
