@@ -1,25 +1,3 @@
 {
-  "notes": [
-    {
-      "author": "aa",
-      "text": "bb",
-      "suspect": "cc",
-      "timestamp": 1607464524782,
-      "id": 1
-    },
-    {
-      "author": "a",
-      "text": "b",
-      "suspect": "c",
-      "timestamp": 1607464532275,
-      "id": 2
-    },
-    {
-      "author": "Chris",
-      "text": "Shot somebody",
-      "suspect": "Tim",
-      "timestamp": 1607464592537,
-      "id": 3
-    }
-  ]
+  "notes": []
 }
