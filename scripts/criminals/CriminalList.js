@@ -2,16 +2,29 @@ import { getCriminals, useCriminals } from "./CriminalDataProvider.js"
 import { Criminal } from "./Criminal.js"
 import { useConvictions } from "../convictions/ConvictionProvider.js"
 import { useOfficers } from "../officers/OfficerProvider.js"
+import { getFacilities, useFacilities } from "../facilities/FacilityProvider.js"
+import { getCriminalFacilities, useCriminalFacilities } from "../facilities/CriminalFacilityProvider.js"
 
 const criminalElement = document.querySelector(".criminalsContainer")
 const eventHub = document.querySelector(".container")
 
-const render = (criminals) => {
-  let criminalCards = []
-  for (const perp of criminals) {
-    criminalCards.push(Criminal(perp))
-  }
-  criminalElement.innerHTML = criminalCards.join("")
+let criminals = []
+let facilities = []
+let crimFac = []
+
+const render = (criminalList) => {
+  criminalElement.innerHTML = criminalList.map(
+      (criminalObject) => {
+          const facilityRelationshipsForThisCriminal = crimFac.filter(cf => cf.criminalId === criminalObject.id)
+
+          const matchingFacilities = facilityRelationshipsForThisCriminal.map(cf => {
+              const matchingFacilityObject = facilities.find(facility => facility.id === cf.facilityId)
+              return matchingFacilityObject
+          })
+
+          return Criminal(criminalObject, matchingFacilities)
+      }
+  ).join("")
 }
 
 eventHub.addEventListener('crimeChosen', event => {
@@ -19,17 +32,24 @@ eventHub.addEventListener('crimeChosen', event => {
     const crimes = useConvictions()
     const crime = crimes.find( (crime) => crime.id === parseInt(event.detail.crimeThatWasChosen) )
     
-    const criminals = useCriminals()
-    const matchingCriminals = criminals.filter( (criminal) => criminal.conviction === crime.name)
+    const criminalsToFilter = criminals.slice()
+    const matchingCriminals = criminalsToFilter.filter( (criminal) => criminal.conviction === crime.name)
       
-    render(matchingCriminals)
+    render(matchingCriminals) 
   }
 })
 
 export const CriminalList = () => {
-  getCriminals().then( () => {
-    let perps = useCriminals()
-    render(perps)                 
+  getCriminals()
+  .then(getFacilities)
+  .then(getCriminalFacilities)
+  .then(
+      () => {
+        facilities = useFacilities()
+        crimFac = useCriminalFacilities()
+        criminals = useCriminals()
+
+          render(criminals)                
   })
 }
 
@@ -38,8 +58,8 @@ eventHub.addEventListener("officerChosen", event => {
   const officerId = parseInt(event.detail.officerThatWasChosen)
   const foundOfficer = officers.find( (officer) => officer.id === officerId)
 
-  const criminals = useCriminals()
-  const matchingCriminals = criminals.filter(criminalObject => criminalObject.arrestingOfficer === foundOfficer.name) 
+  const criminalsToFilter = criminals.slice()
+  const matchingCriminals = criminalsToFilter.filter(criminalObject => criminalObject.arrestingOfficer === foundOfficer.name) 
 
   render(matchingCriminals)
 })
